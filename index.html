@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Birthday Date Invite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Nanum+Pen+Script&display=swap">
+<style>
+/* Layout: an analog scrapbook. Page 1 = taped photos beside an editorial question. Page 2 = a printed receipt itinerary over a faded collage of her photos.
+   Palette pulled from her photos: matcha cardigan, chocolate hijab, lipstick cherry, butter yellow, polka-dot white. Single committed light theme. */
+:root {
+  --ground: #dfe2c6;      /* pistachio paper */
+  --ground-2: #d3d7b4;
+  --ink: #34211a;         /* chocolate */
+  --ink-soft: #6d5649;
+  --cherry: #c2352b;      /* lipstick / grease pencil */
+  --butter: #f1d27b;      /* washi tape */
+  --paper: #fbfaf5;       /* receipt + polaroid white */
+  --serif: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
+  --hand: "Nanum Pen Script", "Segoe Print", cursive;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { position: relative; }
+body {
+  margin: 0;
+  background-color: var(--ground);
+  background-image: radial-gradient(rgba(52, 33, 26, .09) 1.2px, transparent 1.4px);  /* her polka dots */
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .22; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.13  0 0 0 0 0.1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+#dots { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 40; }
+main { position: relative; z-index: 1; padding-inline: 20px; padding-block: 48px 64px; max-width: 1080px; margin: 0 auto; }
+
+.meta { font-family: var(--mono); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); margin: 0; }
+.meta b { color: var(--cherry); font-weight: 600; }
+h1, h2 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; text-wrap: balance; margin: 0; line-height: .98; }
+h1 em, h2 em { color: var(--cherry); }
+.hand { font-family: var(--hand); line-height: 1; }
+
+/* ---------- page 1 ---------- */
+.ask { min-height: calc(100vh - 112px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
+.collage { position: relative; height: 520px; max-width: 440px; width: 100%; justify-self: center; }
+.snap {
+  position: absolute; margin: 0; background: var(--paper); padding: 10px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 14px 30px -12px rgba(52, 33, 26, .45);
+}
+.snap img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; filter: contrast(1.04) saturate(.9) sepia(.08); }
+.snap.back { width: 58%; left: 0; top: 8%; transform: rotate(-7deg); }
+.snap.front { width: 62%; right: 0; top: 4%; transform: rotate(4deg); z-index: 1; }
+.snap.small { z-index: 2; width: 40%; left: 14%; bottom: 0; transform: rotate(3deg); }
+.snap.small img, .snap.front img { aspect-ratio: 1; }
+.snap.front img { filter: contrast(1.08); }
+.tape {
+  position: absolute; width: 96px; height: 28px; background: var(--butter); opacity: .85; z-index: 2;
+  clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 2% 96%, 0 48%);
+}
+.snap.front .tape { top: -14px; left: 50%; transform: translateX(-50%) rotate(-3deg); }
+.snap.back .tape { top: -12px; left: 18px; transform: rotate(-24deg); background: #b9c98f; }
+.snap.small .tape { top: -12px; right: 10px; transform: rotate(18deg); }
+.scribble { position: absolute; left: 55%; bottom: 84px; max-width: 45%; color: var(--cherry); font-size: 1.9rem; transform: rotate(-6deg); display: flex; align-items: flex-start; gap: 6px; z-index: 3; }
+.scribble svg { flex: none; margin-top: 4px; }
+
+.copy { display: grid; gap: 22px; min-width: 0; }
+.copy h1 { font-size: clamp(2.9rem, 7vw, 5.4rem); overflow-wrap: anywhere; }
+.copy .sub { font-size: 1.08rem; color: var(--ink-soft); max-width: 42ch; margin: 0; }
+.choices { position: relative; display: flex; align-items: center; gap: 40px; min-height: 220px; margin-block: 8px; padding-left: 34px; }
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+button:focus-visible { outline: 2px dashed var(--cherry); outline-offset: 6px; }
+#yes {
+  width: 128px; height: 128px; border-radius: 50%;
+  background: var(--cherry); color: var(--paper);
+  font-family: var(--serif); font-style: italic; font-size: 2.3rem;
+  box-shadow: inset 0 0 0 5px var(--cherry), inset 0 0 0 7px var(--paper);
+  transform: rotate(-8deg) scale(var(--grow, 1));
+  transition: transform .25s cubic-bezier(.3, 1.6, .5, 1), background .2s;
+  position: relative; z-index: 2; flex: none;
+}
+#yes:hover { background: #a92a21; transform: rotate(-2deg) scale(calc(var(--grow, 1) * 1.05)); }
+#no {
+  font-family: var(--mono); font-size: .85rem; letter-spacing: .08em; color: var(--ink-soft);
+  text-decoration: underline; text-underline-offset: 4px; padding: 8px 4px; white-space: nowrap;
+}
+#no.loose { position: absolute; transition: left .22s ease, top .22s ease, transform .2s; }
+.meme { margin: 0; width: 190px; background: var(--paper); padding: 8px 8px 0; transform: rotate(var(--tilt, -3deg));
+  box-shadow: 0 12px 24px -10px rgba(52, 33, 26, .45); }
+.meme img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.meme figcaption { font-family: var(--hand); font-size: 1.6rem; line-height: 1.05; color: var(--cherry); text-align: center; padding: 6px 2px 8px; }
+.meme.pop { animation: pop .35s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes pop { from { transform: rotate(var(--tilt, -3deg)) scale(.6); opacity: 0; } }
+
+/* ---------- page 2 ---------- */
+.plan-head { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px 48px; align-items: center; margin-bottom: 56px; }
+.plan-title { display: grid; gap: 14px; min-width: 0; }
+.clip { position: relative; margin: 0; justify-self: center; width: 100%; max-width: 300px; background: var(--paper); padding: 10px; transform: rotate(3deg);
+  box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 18px 34px -14px rgba(52, 33, 26, .5); }
+.clip video { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: #191512; }
+.clip figcaption { font-size: 1.7rem; text-align: center; padding: 6px 0 10px; color: var(--ink); }
+.clip .tape { top: -14px; left: 50%; transform: translateX(-50%) rotate(-4deg); }
+.plan-head h2 { font-size: clamp(3rem, 9vw, 6.4rem); }
+.plan-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+
+.receipt {
+  background: var(--paper); font-family: var(--mono); font-size: .86rem; color: var(--ink);
+  padding: 34px 28px 40px; max-width: 420px; width: 100%; justify-self: center; transform: rotate(-1.2deg);
+  filter: drop-shadow(0 16px 22px rgba(52, 33, 26, .28));
+  position: relative;
+}
+.receipt::before, .receipt::after {   /* torn thermal-paper edges */
+  content: ""; position: absolute; left: 0; right: 0; height: 10px;
+  background: linear-gradient(135deg, var(--paper) 50%, transparent 50%) 0 0 / 14px 10px repeat-x,
+              linear-gradient(-135deg, var(--paper) 50%, transparent 50%) 0 0 / 14px 10px repeat-x;
+}
+.receipt::before { top: -10px; transform: scaleY(-1); }
+.receipt::after { bottom: -10px; }
+.r-center { text-align: center; }
+.r-title { font-weight: 600; font-size: 1.05rem; letter-spacing: .12em; margin: 0; }
+.r-sub { margin: 4px 0 0; color: var(--ink-soft); font-size: .78rem; letter-spacing: .1em; }
+.r-rule { border: 0; border-top: 1.5px dashed var(--ink-soft); margin: 16px 0; opacity: .6; }
+.r-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.r-items li { display: grid; grid-template-columns: 76px 1fr; gap: 10px; font-variant-numeric: tabular-nums; }
+.r-items time { font-weight: 600; }
+.r-items b { font-weight: 600; display: block; text-transform: uppercase; letter-spacing: .03em; }
+.r-items span { color: var(--ink-soft); font-size: .78rem; line-height: 1.45; display: block; }
+.r-items li.star time, .r-items li.star b { color: var(--cherry); }
+.r-row { display: flex; justify-content: space-between; gap: 12px; margin: 4px 0; }
+.r-row span:last-child { text-align: right; }
+.r-total { font-weight: 600; font-size: 1rem; }
+.barcode { height: 54px; margin: 18px auto 6px; width: 80%;
+  background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 4px, var(--ink) 4px 5px, transparent 5px 8px, var(--ink) 8px 11px, transparent 11px 12px, var(--ink) 12px 13px, transparent 13px 16px); }
+.r-thanks { letter-spacing: .2em; font-size: .74rem; }
+
+.side { display: grid; gap: 36px; min-width: 0; }
+.side > *, .plan-title { background: rgba(223, 226, 198, .88); padding: 16px 18px; }
+.foot { background: rgba(223, 226, 198, .88); padding: 8px; }
+.count { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); }
+.count div { padding: 14px 6px 10px; text-align: center; font-variant-numeric: tabular-nums; }
+.count div + div { border-left: 1px solid rgba(52, 33, 26, .3); }
+.count b { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1; }
+.count span { font-family: var(--mono); font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
+.letter { font-family: var(--hand); font-size: 2rem; line-height: 1.08; margin: 0; max-width: 24ch; transform: rotate(-1deg); }
+.letter .sig { display: block; color: var(--cherry); margin-top: 10px; }
+
+/* photo background collage (plan page) */
+.bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: clamp(220px, 30vw, 380px); opacity: 0; transition: opacity 1.4s ease; pointer-events: none; }
+.bg img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15) brightness(.95); }
+.bg::after { content: ""; position: absolute; inset: 0; background: var(--ground); opacity: .55; }
+body.said-yes .bg { opacity: 1; }
+.foot { margin-top: 40px; text-align: center; }
+
+.reveal { animation: develop 1.1s ease both; }
+@keyframes develop { from { opacity: 0; filter: brightness(1.8) contrast(.6) sepia(.6); } to { opacity: 1; filter: none; } }
+.ask.leaving { animation: out .5s ease forwards; }
+@keyframes out { to { opacity: 0; transform: translateY(-14px); } }
+
+@media (max-width: 820px) {
+  .ask { grid-template-columns: 1fr; gap: 28px; min-height: 0; }
+  .collage { height: 430px; max-width: 360px; }
+  .plan-grid { grid-template-columns: 1fr; gap: 44px; }
+  .plan-head { grid-template-columns: 1fr; }
+  .bg { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 260px; }
+  .clip { max-width: 240px; }
+}
+@media (max-width: 420px) {
+  main { padding-inline: 16px; padding-block: 28px 48px; }
+  .collage { height: 380px; }
+  .receipt { padding: 28px 18px 34px; }
+  .r-items li { grid-template-columns: 66px 1fr; }
+  #yes { width: 112px; height: 112px; font-size: 2rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<canvas id="dots" aria-hidden="true"></canvas>
+<div class="bg" id="bg" aria-hidden="true"></div>
+
+<main>
+  <!-- PAGE 1: the question -->
+  <section class="ask" id="ask">
+    <div class="collage">
+      <figure class="snap back"><span class="tape"></span><img src="photos/10.jpg" alt="Aesya in golden-hour light"></figure>
+      <figure class="snap front"><span class="tape"></span><img src="photos/baby.jpg" alt="Aesya as a little girl"></figure>
+      <figure class="snap small"><span class="tape"></span><img src="photos/4.jpg" alt="Aesya holding flowers"></figure>
+      <div class="scribble hand"><svg width="40" height="24" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M38 4 C 28 2, 14 6, 4 14"/><path d="M4 14 L 13 13 M4 14 L 8 6"/></svg><span>the birthday girl</span></div>
+    </div>
+
+    <div class="copy">
+      <p class="meta">An invitation &nbsp;/&nbsp; <b class="js-date-short">14.10.26</b></p>
+      <h1>Yeayyyy bedeyyyy, <em>jom datinggg???</em></h1>
+      <p class="sub js-when">Wednesday, 14 October 2026</p>
+      <div class="choices" id="choices">
+        <button id="yes" type="button">yes</button>
+        <button id="no" type="button">no thanks</button>
+      </div>
+      <figure class="meme" id="meme" hidden aria-live="polite"><img id="meme-img" alt="Cat reacting"><figcaption id="hint"></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- PAGE 2: the plan -->
+  <section id="plan" hidden>
+    <header class="plan-head">
+      <div class="plan-title">
+        <p class="meta"><b>Confirmed</b> &nbsp;/&nbsp; See you at 2</p>
+        <h2>It's a date, <em><span class="js-nick">baby</span>.</em></h2>
+      </div>
+      <figure class="clip">
+        <span class="tape"></span>
+        <video id="clip" src="photos/blur.mp4" poster="photos/blur-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Aesya standing still in a moving crowd"></video>
+      </figure>
+    </header>
+
+    <div class="plan-grid">
+      <article class="receipt" aria-label="Date itinerary">
+        <div class="r-center">
+          <p class="r-title">AESYA'S BIRTHDAY</p>
+          <p class="r-sub js-date-receipt">WED 14 OCT 2026</p>
+          <p class="r-sub">TABLE FOR TWO · TENTATIVE</p>
+        </div>
+        <hr class="r-rule">
+        <ol class="r-items" id="items"></ol>
+        <hr class="r-rule">
+        <div class="r-row"><span>DRESS CODE</span><span>DRESS UP, IT'S FINE DINING</span></div>
+        <div class="r-row"><span>SEAT</span><span>NEXT TO ME</span></div>
+        <div class="r-row"><span>COST TO YOU</span><span>RM 0.00</span></div>
+        <hr class="r-rule">
+        <div class="r-row r-total"><span>TOTAL</span><span>1 GOOD DAY</span></div>
+        <div class="barcode" aria-hidden="true"></div>
+        <p class="r-center r-thanks">THANK YOU FOR SAYING YES</p>
+      </article>
+
+      <div class="side">
+        <div>
+          <div class="count">
+            <div><b id="cd-d">0</b><span>days</span></div>
+            <div><b id="cd-h">0</b><span>hrs</span></div>
+            <div><b id="cd-m">0</b><span>min</span></div>
+            <div><b id="cd-s">0</b><span>sec</span></div>
+          </div>
+        </div>
+        <p class="letter">Happy birthday, baby. See you on the 14th.<span class="sig">— Irfan</span></p>
+      </div>
+    </div>
+
+    <p class="foot meta">Screenshot the receipt</p>
+  </section>
+</main>
+
+<script>
+/* ======== EDIT THESE ======== */
+const CONFIG = {
+  herName: "Aesya",
+  nickname: "baby",
+  dateStart: "2026-10-14T14:00:00",   // pickup date + time
+  plan: [
+    { time: "2:00 PM",  title: "Pickup at D'Erica",                  detail: "I'll come get you at your place." },
+    { time: "~2:30 PM", title: "Mani-pedi, Nicola Beauty Salon",     detail: "Pick any color you like." },
+    { time: "~4:30 PM", title: "Coffee + dessert, Campus Ampang",    detail: "Something sweet for my sweet girl." },
+    { time: "~6:45 PM", title: "Drive to Cyberjaya",                 detail: "Off to the main event." },
+    { time: "7:45 PM",  title: "Arrive at Noir Cyberjaya",           detail: "Early, so we're settled before our table." },
+    { time: "8:15 PM",  title: "Private fine-dining dinner",         detail: "A private session, just the two of us.", star: true }
+  ],
+  photos: ["photos/1.jpg", "photos/2.jpg", "photos/3.jpg", "photos/4.jpg", "photos/5.jpg", "photos/6.jpg", "photos/7.jpg", "photos/8.jpg", "photos/9.jpg"]
+};
+/* ============================ */
+
+const $ = s => document.querySelector(s);
+const start = new Date(CONFIG.dateStart);
+document.querySelectorAll(".js-name").forEach(el => el.textContent = CONFIG.herName);
+document.querySelectorAll(".js-nick").forEach(el => el.textContent = CONFIG.nickname);
+const pad = n => String(n).padStart(2, "0");
+$(".js-date-short").textContent = `${pad(start.getDate())}.${pad(start.getMonth() + 1)}.${String(start.getFullYear()).slice(2)}`;
+$(".js-date-receipt").textContent = start.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" }).replace(/,/g, "").toUpperCase();
+$(".js-when").textContent = `${start.toLocaleDateString("en-GB", { weekday: "long" })}, ${start.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`;
+
+$("#items").innerHTML = CONFIG.plan.map(p =>
+  `<li class="${p.star ? "star" : ""}"><time>${p.time}</time><div><b>${p.title}</b></div></li>`).join("");
+$("#bg").innerHTML = [0, 4, 7].flatMap(k => CONFIG.photos.map((_, i, a) => a[(i + k) % a.length])).map(src => `<img src="${src}" alt="">`).join("");  // repeat so the collage covers the whole page
+
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---- the runaway "no" ---- */
+const yes = $("#yes"), no = $("#no"), box = $("#choices"), hint = $("#hint");
+const memes = [   // [cat photo, caption]
+  ["cats/1.jpg", "are you sure?"], ["cats/4.jpg", "excuse me??"], ["cats/2.jpg", "try again"],
+  ["cats/5.jpg", "nice try"], ["cats/3.jpg", "wrong button, baby"], ["cats/6.jpg", "objection!"],
+  ["cats/8.jpg", "the nails are already booked"], ["cats/7.jpg", "there's dessert involved"], ["cats/9.jpg", "just press yes"]
+];
+memes.forEach(([src]) => { new Image().src = src; });   // preload so each one pops instantly
+let tries = 0;
+function dodge(e) {
+  if (e) e.preventDefault();
+  tries++;
+  const b = box.getBoundingClientRect(), yb = yes.getBoundingClientRect();
+  no.classList.add("loose");
+  const maxX = Math.max(0, b.width - no.offsetWidth), maxY = Math.max(0, b.height - no.offsetHeight);
+  let x, y, g = 0;
+  do { x = Math.random() * maxX; y = Math.random() * maxY; g++; }
+  while (g < 40 && b.left + x < yb.right + 12 && b.left + x + no.offsetWidth > yb.left - 12 &&
+         b.top + y < yb.bottom + 12 && b.top + y + no.offsetHeight > yb.top - 12);
+  no.style.left = x + "px"; no.style.top = y + "px";
+  const [src, cap] = memes[(tries - 1) % memes.length], meme = $("#meme");
+  $("#meme-img").src = src; hint.textContent = cap;
+  meme.style.setProperty("--tilt", (tries % 2 ? -4 : 3) + "deg");
+  meme.hidden = false; meme.classList.remove("pop"); void meme.offsetWidth; meme.classList.add("pop");
+  yes.style.setProperty("--grow", Math.min(1 + tries * .08, 1.45));
+  if (tries > 3) no.style.transform = `scale(${Math.max(1 - (tries - 3) * .1, .6)})`;
+}
+no.addEventListener("mouseenter", dodge);
+no.addEventListener("touchstart", dodge, { passive: false });
+no.addEventListener("click", dodge);
+
+/* ---- polka-dot confetti ---- */
+const cv = $("#dots"), ctx = cv.getContext("2d");
+let dots = [], running = false;
+function size() { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; }
+size(); addEventListener("resize", size);
+function burst(x, y) {
+  const C = ["#c2352b", "#f1d27b", "#34211a", "#fbfaf5", "#9fb06a"], d = devicePixelRatio;
+  for (let i = 0; i < 120; i++) {
+    const a = Math.random() * Math.PI * 2, s = (3 + Math.random() * 10) * d;
+    dots.push({ x: x * d, y: y * d, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 5 * d, r: (2 + Math.random() * 5) * d,
+                c: C[i % C.length], life: 120 + Math.random() * 60 });
+  }
+  if (!running) { running = true; requestAnimationFrame(tick); }
+}
+function tick() {
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  dots = dots.filter(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += .3 * devicePixelRatio; p.vx *= .985; p.life--;
+    ctx.globalAlpha = Math.min(1, p.life / 40); ctx.fillStyle = p.c;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    return p.life > 0;
+  });
+  if (dots.length) requestAnimationFrame(tick); else { running = false; ctx.clearRect(0, 0, cv.width, cv.height); }
+}
+
+/* ---- she said yes ---- */
+yes.addEventListener("click", () => {
+  if (reduceMotion) return showPlan();
+  const r = yes.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + r.height / 2);
+  $("#ask").classList.add("leaving");
+  setTimeout(showPlan, 520);
+});
+function showPlan() {
+  $("#ask").hidden = true;
+  document.body.classList.add("said-yes");
+  const plan = $("#plan");
+  plan.hidden = false; plan.classList.add("reveal");
+  const v = $("#clip"); v.muted = true; v.play().catch(() => {});
+  scrollTo({ top: 0 });
+  countdown(); setInterval(countdown, 1000);
+}
+function countdown() {
+  let t = Math.max(0, start - new Date()) / 1000;
+  const d = Math.floor(t / 86400); t -= d * 86400;
+  const h = Math.floor(t / 3600); t -= h * 3600;
+  const m = Math.floor(t / 60), s = Math.floor(t - m * 60);
+  $("#cd-d").textContent = d; $("#cd-h").textContent = pad(h); $("#cd-m").textContent = pad(m); $("#cd-s").textContent = pad(s);
+}
+</script>
+
+</body>
+</html>
