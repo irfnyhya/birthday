@@ -25,6 +25,7 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { min-height: 100%; }
 body { position: relative; }
 body {
@@ -95,11 +96,12 @@ button:focus-visible { outline: 2px dashed var(--cherry); outline-offset: 6px; }
   text-decoration: underline; text-underline-offset: 4px; padding: 8px 4px; white-space: nowrap;
 }
 #no.loose { position: absolute; transition: left .22s ease, top .22s ease, transform .2s; }
-.meme { margin: 0; width: 190px; background: var(--paper); padding: 8px 8px 0; transform: rotate(var(--tilt, -3deg));
+.meme { position: absolute; right: 0; bottom: calc(100% - 30px); z-index: 5; pointer-events: none; margin: 0; width: 180px; background: var(--paper); padding: 8px 8px 0; transform: rotate(var(--tilt, -3deg));
   box-shadow: 0 12px 24px -10px rgba(52, 33, 26, .45); }
 .meme img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
 .meme figcaption { font-family: var(--hand); font-size: 1.6rem; line-height: 1.05; color: var(--cherry); text-align: center; padding: 6px 2px 8px; }
 .meme.pop { animation: pop .35s cubic-bezier(.3, 1.6, .5, 1); }
+.meme.bye { opacity: 0; transition: opacity .4s ease; }
 @keyframes pop { from { transform: rotate(var(--tilt, -3deg)) scale(.6); opacity: 0; } }
 
 /* ---------- page 2 ---------- */
@@ -132,11 +134,12 @@ button:focus-visible { outline: 2px dashed var(--cherry); outline-offset: 6px; }
 .r-rule { border: 0; border-top: 1.5px dashed var(--ink-soft); margin: 16px 0; opacity: .6; }
 .r-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .r-items li { display: grid; grid-template-columns: 76px 1fr; gap: 10px; font-variant-numeric: tabular-nums; }
-.r-items time { font-weight: 600; }
+.r-items time { font-weight: 600; white-space: nowrap; }
 .r-items b { font-weight: 600; display: block; text-transform: uppercase; letter-spacing: .03em; }
 .r-items span { color: var(--ink-soft); font-size: .78rem; line-height: 1.45; display: block; }
 .r-items li.star time, .r-items li.star b { color: var(--cherry); }
 .r-row { display: flex; justify-content: space-between; gap: 12px; margin: 4px 0; }
+.r-row span:first-child { white-space: nowrap; }
 .r-row span:last-child { text-align: right; }
 .r-total { font-weight: 600; font-size: 1rem; }
 .barcode { height: 54px; margin: 18px auto 6px; width: 80%;
@@ -175,11 +178,23 @@ body.said-yes .bg { opacity: 1; }
   .clip { max-width: 240px; }
 }
 @media (max-width: 420px) {
-  main { padding-inline: 16px; padding-block: 28px 48px; }
-  .collage { height: 380px; }
+  main { padding-inline: 16px; padding-block: 20px 40px; }
+  .ask { gap: 18px; }
+  .copy { gap: 14px; }
+  .collage { height: 300px; max-width: 300px; }
+  .scribble { font-size: 1.5rem; bottom: 70px; }
+  .copy h1 { font-size: 2.6rem; }
+  .copy .sub { font-size: 1rem; }
+  .choices { min-height: 170px; gap: 28px; padding-left: 20px; margin-block: 0; }
+  .meme { width: 140px; }
+  .meme figcaption { font-size: 1.35rem; }
+  .plan-head { margin-bottom: 36px; gap: 28px; }
+  .plan-head h2 { font-size: 3rem; }
+  .letter { font-size: 1.7rem; }
   .receipt { padding: 28px 18px 34px; }
-  .r-items li { grid-template-columns: 66px 1fr; }
-  #yes { width: 112px; height: 112px; font-size: 2rem; }
+  .receipt { font-size: .8rem; }
+  .r-items li { grid-template-columns: 72px 1fr; gap: 8px; }
+  #yes { width: 100px; height: 100px; font-size: 1.9rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -208,8 +223,8 @@ body.said-yes .bg { opacity: 1; }
       <div class="choices" id="choices">
         <button id="yes" type="button">yes</button>
         <button id="no" type="button">no thanks</button>
+        <figure class="meme" id="meme" hidden aria-live="polite"><img id="meme-img" alt="Cat reacting"><figcaption id="hint"></figcaption></figure>
       </div>
-      <figure class="meme" id="meme" hidden aria-live="polite"><img id="meme-img" alt="Cat reacting"><figcaption id="hint"></figcaption></figure>
     </div>
   </section>
 
@@ -318,7 +333,8 @@ function dodge(e) {
   const [src, cap] = memes[(tries - 1) % memes.length], meme = $("#meme");
   $("#meme-img").src = src; hint.textContent = cap;
   meme.style.setProperty("--tilt", (tries % 2 ? -4 : 3) + "deg");
-  meme.hidden = false; meme.classList.remove("pop"); void meme.offsetWidth; meme.classList.add("pop");
+  meme.hidden = false; meme.classList.remove("pop", "bye"); void meme.offsetWidth; meme.classList.add("pop");
+  clearTimeout(dodge.t); dodge.t = setTimeout(() => meme.classList.add("bye"), 2600);
   yes.style.setProperty("--grow", Math.min(1 + tries * .08, 1.45));
   if (tries > 3) no.style.transform = `scale(${Math.max(1 - (tries - 3) * .1, .6)})`;
 }
