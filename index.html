@@ -382,6 +382,7 @@ function tick() {
 
 /* ---- the song (YouTube player, started by her "yes" tap) ---- */
 const SONG_ID = "hByMu--0qJo";   // Romantic Echoes - Tentang Bunga (Official Audio)
+const SONG_START = 63.5;          // chorus "Cinta yang kuberikan untukmu" begins at 1:04
 let player = null, playerReady = false, wantPlay = false;
 const songBtn = $("#song"), songState = $("#song-state");
 function setSongUI(playing) {
@@ -392,7 +393,7 @@ function setSongUI(playing) {
 window.onYouTubeIframeAPIReady = () => {
   player = new YT.Player("yt", {
     videoId: SONG_ID,
-    playerVars: { playsinline: 1, controls: 0, rel: 0 },
+    playerVars: { playsinline: 1, controls: 0, rel: 0, start: Math.floor(SONG_START) },
     events: {
       onReady: () => { playerReady = true; if (wantPlay) playSong(); },
       onStateChange: e => setSongUI(e.data === YT.PlayerState.PLAYING || e.data === YT.PlayerState.BUFFERING)
@@ -408,7 +409,11 @@ window.onYouTubeIframeAPIReady = () => {
 function playSong() {
   wantPlay = true;
   if (!playerReady) return;
-  try { player.unMute(); player.setVolume(85); player.playVideo(); } catch (e) {}
+  try {
+    player.unMute(); player.setVolume(85);
+    if (!playSong.started) { player.seekTo(SONG_START, true); playSong.started = true; }   // first play: jump to the chorus
+    player.playVideo();
+  } catch (e) {}
 }
 songBtn.addEventListener("click", () => {
   if (!playerReady) return playSong();
