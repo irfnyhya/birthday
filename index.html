@@ -157,15 +157,6 @@ button:focus-visible { outline: 2px dashed var(--cherry); outline-offset: 6px; }
 .letter { font-family: var(--hand); font-size: 2rem; line-height: 1.08; margin: 0; max-width: 24ch; transform: rotate(-1deg); }
 .letter .sig { display: block; color: var(--cherry); margin-top: 10px; }
 
-.song { justify-self: start; display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px;
-  font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; color: var(--ink); text-align: left;
-  border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 14px 6px 6px; background: var(--paper); }
-.song b { font-weight: 600; }
-.song-state { color: var(--cherry); text-transform: uppercase; letter-spacing: .14em; font-size: .66rem; }
-.disc { width: 26px; height: 26px; border-radius: 50%; flex: none;
-  background: radial-gradient(circle, var(--cherry) 0 4px, var(--ink) 4.5px 7px, #4a3329 7.5px 8px, var(--ink) 8.5px); }
-.song.playing .disc { animation: spin 2.4s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
 #yt { position: absolute; left: -9999px; top: 0; width: 200px; height: 120px; overflow: hidden; }
 
 /* photo background collage (plan page) */
@@ -246,7 +237,6 @@ body.said-yes .bg { opacity: 1; }
       <div class="plan-title">
         <p class="meta"><b>Confirmed</b> &nbsp;/&nbsp; See you at 2</p>
         <h2>It's a date, <em><span class="js-nick">baby</span>.</em></h2>
-        <button class="song" id="song" type="button" aria-pressed="false"><span class="disc" aria-hidden="true"></span><span class="song-text"><b>Tentang Bunga</b> · Romantic Echoes</span><span class="song-state" id="song-state">tap to play</span></button>
       </div>
       <figure class="clip">
         <span class="tape"></span>
@@ -384,26 +374,18 @@ function tick() {
 const SONG_ID = "hByMu--0qJo";   // Romantic Echoes - Tentang Bunga (Official Audio)
 const SONG_START = 63.5;          // chorus "Cinta yang kuberikan untukmu" begins at 1:04
 let player = null, playerReady = false, wantPlay = false;
-const songBtn = $("#song"), songState = $("#song-state");
-function setSongUI(playing) {
-  songBtn.classList.toggle("playing", playing);
-  songBtn.setAttribute("aria-pressed", String(playing));
-  songState.textContent = playing ? "now playing" : "tap to play";
-}
 window.onYouTubeIframeAPIReady = () => {
   player = new YT.Player("yt", {
     videoId: SONG_ID,
     playerVars: { playsinline: 1, controls: 0, rel: 0, start: Math.floor(SONG_START) },
     events: {
-      onReady: () => { playerReady = true; if (wantPlay) playSong(); },
-      onStateChange: e => setSongUI(e.data === YT.PlayerState.PLAYING || e.data === YT.PlayerState.BUFFERING)
+      onReady: () => { playerReady = true; if (wantPlay) playSong(); }
     }
   });
 };
 (function loadYT() {
   const tag = document.createElement("script");
   tag.src = "https://www.youtube.com/iframe_api";
-  tag.onerror = () => { songBtn.hidden = true; };   // e.g. where YouTube is blocked
   document.head.appendChild(tag);
 })();
 function playSong() {
@@ -415,10 +397,9 @@ function playSong() {
     player.playVideo();
   } catch (e) {}
 }
-songBtn.addEventListener("click", () => {
-  if (!playerReady) return playSong();
-  const st = player.getPlayerState();
-  if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING) player.pauseVideo(); else playSong();
+// if a phone blocked the sound on the "yes" tap, start it on her next tap anywhere
+document.addEventListener("pointerdown", () => {
+  if (wantPlay && playerReady && player.getPlayerState() !== YT.PlayerState.PLAYING) playSong();
 });
 
 /* ---- she said yes ---- */
